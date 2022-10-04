@@ -21,9 +21,16 @@ function search(event) {
   event.preventDefault();
   let cityElement = document.querySelector("#city");
   let cityInput = document.querySelector("#city-input");
-  let dateElement = document.querySelector("#date");
-  let searchForm = document.querySelector("#search-form");
   cityElement.innerHTML = cityInput.value;
+
+  searchCity(cityInput.value);
+}
+
+function searchCity(city) {
+  let apiKey = "3499ef150985eccadd080ff408a018df";
+  let units = "imperial";
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
+  axios.get(url).then(showWeather);
 }
 
 let searchForm = document.getElementById("search-form");
@@ -40,8 +47,9 @@ function retrievePosition(position) {
   let apiKey = "3499ef150985eccadd080ff408a018df";
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-  axios.get(url).then(retrievePosition);
+  let units = "imperial";
+  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+  axios.get(url).then(showWeather);
 }
 
 navigator.geolocation.getCurrentPosition(retrievePosition);
